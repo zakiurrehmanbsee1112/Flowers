@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Love Garden ❤️</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+overflow:hidden;
+height:100vh;
+background:radial-gradient(circle at center,#220015,#000);
+font-family:Georgia,serif;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+}
+
+.center{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+z-index:100;
+width:90%;
+}
+
+h1{
+color:#ff5c93;
+font-size:4rem;
+text-shadow:0 0 20px #ff5c93;
+margin-bottom:20px;
+animation:pulse 2s infinite;
+}
+
+.compliment{
+color:white;
+font-size:1.5rem;
+line-height:1.8;
+max-width:800px;
+margin:auto;
+padding:20px;
+background:rgba(255,255,255,0.05);
+border-radius:20px;
+backdrop-filter:blur(5px);
+}
+
+@keyframes pulse{
+50%{
+transform:scale(1.05);
+}
+}
+
+.sparkle{
+position:absolute;
+color:white;
+animation:twinkle 2s infinite;
+}
+
+@keyframes twinkle{
+50%{
+opacity:.2;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="center">
+<h1>❤️ For You My Princess Afiffi❤️</h1>
+
+<div class="compliment" id="compliment">
+
+Among all the flowers in this garden,
+none can match your beauty.
+
+</div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<!-- Optional Music -->
+<!--
+<audio autoplay loop>
+<source src="music.mp3" type="audio/mp3">
+</audio>
+-->
+
+<script>
+
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const flowers=[];
+
+const compliments=[
+
+"🌹 Among all the flowers in this garden, none can match your beauty. Roses may bloom and tulips may shine, but you will always be the most beautiful part of my world. ❤️",
+
+"🌷 Flowers bloom with sunlight, but my world blooms with your smile. Every moment with you makes life brighter and more beautiful. ❤️",
+
+"🌸 Even a thousand roses cannot compete with the beauty of your heart. Your kindness and love make everything around you blossom. ❤️",
+
+"💖 If every rose in this garden represented a reason I love you, this garden would stretch beyond the stars and never end. ❤️"
+
+];
+
+let current=0;
+
+setInterval(()=>{
+
+current=(current+1)%compliments.length;
+
+document.getElementById("compliment").innerHTML=
+compliments[current];
+
+},5000);
+
+class Flower{
+
+constructor(){
+
+const types=["🌹","🌷","🌸","🌺"];
+
+this.flower=
+types[Math.floor(Math.random()*types.length)];
+
+this.x=Math.random()*canvas.width;
+this.y=canvas.height+50;
+
+this.speed=1+Math.random()*2;
+
+this.size=30+Math.random()*40;
+
+this.swing=Math.random()*100;
+
+}
+
+update(){
+
+this.y-=this.speed;
+
+this.x+=Math.sin(this.y/50+this.swing)*0.5;
+
+if(this.y<-50){
+
+this.y=canvas.height+50;
+this.x=Math.random()*canvas.width;
+
+}
+
+}
+
+draw(){
+
+ctx.font=this.size+"px serif";
+ctx.fillText(this.flower,this.x,this.y);
+
+}
+
+}
+
+for(let i=0;i<80;i++){
+
+flowers.push(new Flower());
+
+}
+
+const stars=[];
+
+for(let i=0;i<120;i++){
+
+stars.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2+1
+
+});
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+stars.forEach(star=>{
+
+ctx.beginPath();
+ctx.fillStyle="rgba(255,255,255,.8)";
+ctx.arc(star.x,star.y,star.r,0,Math.PI*2);
+ctx.fill();
+
+});
+
+flowers.forEach(f=>{
+
+f.update();
+f.draw();
+
+});
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+window.addEventListener("resize",()=>{
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+});
+
+</script>
+
+</body>
+</html>
